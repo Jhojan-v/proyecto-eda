@@ -1,0 +1,70 @@
+:root {
+  font-family: 'Trebuchet MS', 'Gill Sans', sans-serif;
+  line-height: 1.55;
+  font-weight: 400;
+  color: #d6c8f2;
+  background:
+    radial-gradient(circle at top left, rgba(162, 89, 255, 0.28), transparent 24%),
+    radial-gradient(circle at top right, rgba(131, 56, 236, 0.22), transparent 20%),
+    linear-gradient(180deg, #09060f 0%, #130a1f 52%, #050308 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --heading-strong: #f3eaff;
+  --text-muted: #a692c6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+#root {
+  width: min(1240px, calc(100% - 24px));
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--heading-strong);
+  line-height: 1.1;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
+}
+
+h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+p {
+  margin: 0;
+}
