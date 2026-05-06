@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const STORAGE_KEY = 'eneba-lite-history'
 
@@ -52,7 +52,7 @@ export function useGameHistory() {
     return removed
   }, [stack])
 
-  const latestVisited = useMemo(() => stack.peek(), [history, stack])
+  const latestVisited = stack.peek()
 
   return {
     history,

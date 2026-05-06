@@ -14,11 +14,6 @@ export function FeaturedCarousel({
   const [rotation, setRotation] = useState(0)
 
   useEffect(() => {
-    setActiveGame(list.getCurrent())
-    setRotation(0)
-  }, [list])
-
-  useEffect(() => {
     const interval = window.setInterval(() => {
       const nextGame = list.moveNext()
       setActiveGame(nextGame)

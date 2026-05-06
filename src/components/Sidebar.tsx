@@ -1,28 +1,57 @@
 import type { CategoryNode } from '../types'
 
-function SidebarBranch({ node }: { node: CategoryNode }) {
-  return (
-    <li>
-      <a href={node.link}>{node.title}</a>
-      {node.children && node.children.length > 0 ? (
-        <ul>
-          {node.children.map((child) => (
-            <SidebarBranch key={`${node.title}-${child.title}`} node={child} />
-          ))}
-        </ul>
-      ) : null}
-    </li>
-  )
+type SidebarProps = {
+  tree: CategoryNode
+  selectedCategory: string
+  totalGames: number
+  onSelectCategory: (category: string) => void
 }
 
-export function Sidebar({ tree }: { tree: CategoryNode }) {
+export function Sidebar({
+  tree,
+  selectedCategory,
+  totalGames,
+  onSelectCategory,
+}: SidebarProps) {
+  const categories = tree.children ?? []
+
   return (
-    <aside className="sidebar glass-card">
-      <h2>Géneros</h2>
-      <p className="muted">Explora la tienda por estilo, ambiente y tipo de juego.</p>
-      <ul>
-        <SidebarBranch node={tree} />
-      </ul>
+    <aside className="sidebar glass-card" id="categorias">
+      <div className="sidebar-header">
+        <span className="status-chip">Explorar</span>
+        <h2>Géneros</h2>
+        <p className="muted">Filtra el catálogo por tipo de juego.</p>
+      </div>
+
+      <div className="sidebar-summary">
+        <strong>{totalGames}</strong>
+        <span>juegos disponibles</span>
+      </div>
+
+      <nav className="sidebar-filter-list" aria-label="Filtros por género">
+        <button
+          className={selectedCategory === 'Todos' ? 'sidebar-filter active' : 'sidebar-filter'}
+          type="button"
+          onClick={() => onSelectCategory('Todos')}
+        >
+          <span>Todos</span>
+          <small>Ver catálogo completo</small>
+        </button>
+
+        {categories.map((category) => (
+          <button
+            className={
+              selectedCategory === category.title ? 'sidebar-filter active' : 'sidebar-filter'
+            }
+            key={category.title}
+            type="button"
+            onClick={() => onSelectCategory(category.title)}
+          >
+            <span>{category.title}</span>
+            <small>{category.children?.map((child) => child.title).join(' · ')}</small>
+          </button>
+        ))}
+      </nav>
     </aside>
   )
 }

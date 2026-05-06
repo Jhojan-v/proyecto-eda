@@ -2,33 +2,25 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FeaturedCarousel } from '../components/FeaturedCarousel'
 import { Sidebar } from '../components/Sidebar'
+import { TopNav } from '../components/TopNav'
 import { useAuth } from '../context/AuthContext'
+import { useCart } from '../context/CartContext'
 import { categoryTree, games } from '../data/games'
 import { useGameHistory } from '../hooks/useGameHistory'
-
-class Queue<T> {
-  private items: T[] = []
-
-  enqueue(item: T) {
-    this.items.push(item)
-  }
-
-  dequeue() {
-    return this.items.shift() ?? null
-  }
-
-  snapshot() {
-    return [...this.items]
-  }
-}
 
 export function HomePage() {
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
+  const { addToCart, cartItems, totalItems, totalPrice } = useCart()
   const { history, latestVisited, removeLatestVisit } = useGameHistory()
-  const [purchaseQueue] = useState(() => new Queue<string>())
-  const [queuedGames, setQueuedGames] = useState<string[]>([])
-  const [processingMessage, setProcessingMessage] = useState('La cola esta vacia por ahora.')
+  const [processingMessage, setProcessingMessage] = useState('El carrito está listo.')
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [selectedCategory, setSelectedCategory] = useState('Todos')
+
+  const filteredGames = useMemo(() => {
+    if (selectedCategory === 'Todos') return games
+    return games.filter((game) => game.category === selectedCategory)
+  }, [selectedCategory])
 
   const recentGames = useMemo(() => {
     const uniqueIds = [...new Set([...history].reverse())].slice(0, 4)
@@ -41,167 +33,176 @@ export function HomePage() {
     navigate(`/game/${gameId}`)
   }
 
-  const handlePurchase = (title: string) => {
-    purchaseQueue.enqueue(title)
-    setQueuedGames(purchaseQueue.snapshot())
+  const handlePurchase = (gameId: string) => {
+    const game = games.find((item) => item.id === gameId)
+    if (!game) return
 
-    window.setTimeout(() => {
-      const nextOrder = purchaseQueue.dequeue()
-      setQueuedGames(purchaseQueue.snapshot())
-      if (nextOrder) {
-        setProcessingMessage(`Procesando pedido de ${nextOrder}`)
-      }
-    }, 400)
+    addToCart(game)
+    setProcessingMessage(`${game.title} fue agregado al carrito.`)
   }
 
   return (
-    <main className="page-shell">
-      <section className="hero-banner">
-        <div className="hero-copy">
-          <div className="pill-row">
-            <span className="pill">Claves digitales</span>
-            <span className="pill">Ofertas instantáneas</span>
-            <span className="pill">Mundos deseados</span>
-          </div>
-          <div>
-            <h1>i wish to game</h1>
-            <p>
-              Descubre ofertas neón, aventuras seleccionadas y tu próxima obsesión gamer en
-              una sola vitrina.
-            </p>
-          </div>
-          <div className="action-row">
-            <Link className="soft-button" to={isAuthenticated ? '/dashboard' : '/login'}>
-              {isAuthenticated ? 'Abrir dashboard' : 'Iniciar sesión'}
-            </Link>
-            <a className="ghost-button" href="#catalogo">
-              Explorar catálogo
-            </a>
-          </div>
-        </div>
+    <div className={sidebarOpen ? 'store-layout sidebar-open' : 'store-layout sidebar-closed'}>
+      <TopNav
+        sidebarOpen={sidebarOpen}
+        onToggleSidebar={() => setSidebarOpen((current) => !current)}
+      />
 
-        <div className="hero-stats">
-          <article className="stat-card">
-            <strong>4</strong>
-            <span>ofertas destacadas rotando en vivo</span>
-          </article>
-          <article className="stat-card">
-            <strong>24/7</strong>
-            <span>acceso a tu panel y tus compras</span>
-          </article>
-          <article className="stat-card">
-            <strong>Top</strong>
-            <span>fantasía oscura, farming cozy y acción indie</span>
-          </article>
-          <article className="stat-card">
-            <strong>Rápido</strong>
-            <span>cola de compra con procesamiento instantáneo</span>
-          </article>
-        </div>
-      </section>
+      <div className="store-body">
+        <Sidebar
+          tree={categoryTree}
+          selectedCategory={selectedCategory}
+          totalGames={filteredGames.length}
+          onSelectCategory={setSelectedCategory}
+        />
 
-      <div className="content-grid">
-        <Sidebar tree={categoryTree} />
-
-        <div className="main-column">
-          <FeaturedCarousel items={games} onOpenDetails={handleOpenDetails} />
-
-          <section id="catalogo" className="soft-card">
-            <div className="section-header">
-              <div>
-                <h2>Catálogo</h2>
-                <p className="muted">Juegos seleccionados para comprar al instante.</p>
+        <main className="page-shell">
+          <section className="hero-banner">
+            <div className="hero-copy">
+              <div className="pill-row">
+                <span className="pill">Claves digitales</span>
+                <span className="pill">Ofertas instantáneas</span>
+                <span className="pill">Mundos deseados</span>
               </div>
-              <span className="status-chip">Cola activa</span>
+              <div>
+                <h1>i wish to game</h1>
+                <p>
+                  Descubre ofertas neón, aventuras seleccionadas y tu próxima obsesión gamer en
+                  una sola vitrina organizada.
+                </p>
+              </div>
+              <div className="action-row">
+                <Link className="soft-button" to={isAuthenticated ? '/dashboard' : '/login'}>
+                  {isAuthenticated ? 'Abrir dashboard' : 'Iniciar sesión'}
+                </Link>
+                <a className="ghost-button" href="#catalogo">
+                  Explorar catálogo
+                </a>
+              </div>
             </div>
 
-            <div className="queue-grid">
-              <div className="catalog-grid">
-                {games.map((game) => (
-                  <article key={game.id} className="game-card glass-card">
-                    <h3>{game.title}</h3>
-                    <p>{game.description}</p>
-                    <div className="game-tags">
-                      {game.tags.map((tag) => (
-                        <span key={tag} className="tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="detail-actions" style={{ marginTop: '16px' }}>
-                      <button className="soft-button" onClick={() => handlePurchase(game.title)}>
-                        Comprar
-                      </button>
-                      <button
-                        className="ghost-button"
-                        onClick={() => handleOpenDetails(game.id)}
-                      >
-                        Detalle
-                      </button>
-                    </div>
-                  </article>
-                ))}
+            <div className="hero-stats">
+              <article className="stat-card">
+                <strong>{games.length}</strong>
+                <span>juegos en catálogo</span>
+              </article>
+              <article className="stat-card">
+                <strong>{totalItems}</strong>
+                <span>productos en carrito</span>
+              </article>
+              <article className="stat-card">
+                <strong>{selectedCategory}</strong>
+                <span>filtro activo</span>
+              </article>
+            </div>
+          </section>
+
+          <div className="main-column">
+            <FeaturedCarousel items={filteredGames} onOpenDetails={handleOpenDetails} />
+
+            <section id="catalogo" className="soft-card">
+              <div className="section-header">
+                <div>
+                  <h2>Catálogo</h2>
+                  <p className="muted">
+                    Mostrando {filteredGames.length} juego(s) de {selectedCategory.toLowerCase()}.
+                  </p>
+                </div>
+                <span className="status-chip">Filtro: {selectedCategory}</span>
               </div>
 
-              <aside className="queue-card glass-card">
-                <h3>Cola de compras</h3>
-                <p>{processingMessage}</p>
-                <ul className="queue-list">
-                  {queuedGames.length > 0 ? (
-                    queuedGames.map((item, index) => (
-                    <li key={`${item}-${index}`}>
-                      <span>{item}</span>
-                        <span className="muted">Turno {index + 1}</span>
+              <div className="queue-grid">
+                <div className="catalog-grid">
+                  {filteredGames.map((game) => (
+                    <article key={game.id} className="game-card glass-card">
+                      <div className="game-card-header">
+                        <h3>{game.title}</h3>
+                        <span className="tag">{game.category}</span>
+                      </div>
+                      <p>{game.description}</p>
+                      <div className="game-tags">
+                        {game.tags.map((tag) => (
+                          <span key={tag} className="tag">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="detail-actions" style={{ marginTop: '16px' }}>
+                        <button className="soft-button" onClick={() => handlePurchase(game.id)}>
+                          Comprar
+                        </button>
+                        <button
+                          className="ghost-button"
+                          onClick={() => handleOpenDetails(game.id)}
+                        >
+                          Detalle
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+
+                <aside className="queue-card glass-card">
+                  <h3>Carrito</h3>
+                  <p>{processingMessage}</p>
+                  <p className="tiny muted">
+                    {totalItems} producto(s) · Total ${totalPrice.toFixed(2)}
+                  </p>
+                  <ul className="queue-list">
+                    {cartItems.length > 0 ? (
+                      cartItems.map((item) => (
+                        <li key={item.id}>
+                          <span>{item.title}</span>
+                          <span className="muted">x{item.quantity}</span>
+                        </li>
+                      ))
+                    ) : (
+                      <li>
+                        <span>No hay productos agregados</span>
+                        <span className="muted">Vacío</span>
                       </li>
-                    ))
-                  ) : (
-                    <li>
-                      <span>No hay pedidos pendientes</span>
-                      <span className="muted">Lista</span>
-                    </li>
-                  )}
-                </ul>
-              </aside>
-            </div>
-          </section>
-
-          <section className="soft-card">
-            <div className="section-header">
-              <div>
-                <h2>Vistos recientemente</h2>
-                <p className="muted">Vuelve rápidamente a los juegos que revisaste hace poco.</p>
+                    )}
+                  </ul>
+                </aside>
               </div>
-              <div className="recent-row">
-                <span className="status-chip">
-                  Último: {latestVisited ?? 'sin registros'}
-                </span>
-                <button className="ghost-button" onClick={() => removeLatestVisit()}>
-                  Quitar último
-                </button>
-              </div>
-            </div>
+            </section>
 
-            <div className="recent-grid">
-              {recentGames.length > 0 ? (
-                recentGames.map((game) => (
-                  <article key={game.id} className="recent-card glass-card">
-                    <h3>{game.title}</h3>
-                    <p className="tiny muted">ID del juego: {game.id}</p>
-                    <button className="link-button" onClick={() => handleOpenDetails(game.id)}>
-                      Abrir detalle
-                    </button>
+            <section className="soft-card">
+              <div className="section-header">
+                <div>
+                  <h2>Vistos recientemente</h2>
+                  <p className="muted">Vuelve rápidamente a los juegos que revisaste hace poco.</p>
+                </div>
+                <div className="recent-row">
+                  <span className="status-chip">Último: {latestVisited ?? 'sin registros'}</span>
+                  <button className="ghost-button" onClick={() => removeLatestVisit()}>
+                    Quitar último
+                  </button>
+                </div>
+              </div>
+
+              <div className="recent-grid">
+                {recentGames.length > 0 ? (
+                  recentGames.map((game) => (
+                    <article key={game.id} className="recent-card glass-card">
+                      <h3>{game.title}</h3>
+                      <p className="tiny muted">ID del juego: {game.id}</p>
+                      <button className="link-button" onClick={() => handleOpenDetails(game.id)}>
+                        Abrir detalle
+                      </button>
+                    </article>
+                  ))
+                ) : (
+                  <article className="recent-card glass-card">
+                    <h3>No hay visitas recientes</h3>
+                    <p>Explora el catálogo y aquí aparecerán tus últimas vistas.</p>
                   </article>
-                ))
-              ) : (
-                <article className="recent-card glass-card">
-                  <h3>No hay visitas recientes</h3>
-                  <p>Explora el catálogo y aquí aparecerán tus últimas vistas.</p>
-                </article>
-              )}
-            </div>
-          </section>
-        </div>
+                )}
+              </div>
+            </section>
+          </div>
+        </main>
       </div>
-    </main>
+    </div>
   )
 }
