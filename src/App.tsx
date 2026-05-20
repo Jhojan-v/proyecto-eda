@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { DashboardPage } from './pages/DashboardPage'
 import { GameDetailPage } from './pages/GameDetailPage'
+import { HistoryPage } from './pages/HistoryPage'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
 
@@ -18,6 +19,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/game/:id" element={<GameDetailPage />} />
+              <Route path="/history" element={<HistoryPage />} />
               <Route
                 path="/dashboard"
                 element={

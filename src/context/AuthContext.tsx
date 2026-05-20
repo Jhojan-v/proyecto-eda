@@ -27,6 +27,7 @@ type AuthResult = {
 type AuthContextValue = {
   isAuthenticated: boolean
   loading: boolean
+  userUid: string | null
   userEmail: string | null
   userName: string | null
   login: (email: string, password: string) => Promise<AuthResult>
@@ -59,6 +60,7 @@ function getAuthErrorMessage(error: unknown) {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const [userUid, setUserUid] = useState<string | null>(null)
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [userName, setUserName] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -74,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true)
 
       if (!firebaseUser?.email) {
+        setUserUid(null)
         setUserEmail(null)
         setUserName(null)
         setLoading(false)
@@ -95,6 +98,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       profileTable.set(profile)
+      setUserUid(firebaseUser.uid)
       setUserEmail(profile.email)
       setUserName(profile.name)
       setLoading(false)
@@ -172,6 +176,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await signOut(auth)
     }
 
+    setUserUid(null)
     setUserEmail(null)
     setUserName(null)
   }, [])
@@ -180,13 +185,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({
       isAuthenticated: Boolean(userEmail),
       loading,
+      userUid,
       userEmail,
       userName,
       login,
       register,
       logout,
     }),
-    [loading, login, logout, register, userEmail, userName],
+    [loading, login, logout, register, userEmail, userName, userUid],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

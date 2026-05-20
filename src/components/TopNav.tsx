@@ -51,6 +51,12 @@ export function TopNav({
         >
           Dashboard
         </NavLink>
+        <NavLink
+          to="/history"
+          className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+        >
+          Historial
+        </NavLink>
       </nav>
 
       <div className="nav-actions">

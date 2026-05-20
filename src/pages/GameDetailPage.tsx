@@ -36,8 +36,8 @@ export function GameDetailPage() {
     )
   }
 
-  const handleAddToCart = () => {
-    addToCart(game)
+  const handleAddToCart = async () => {
+    await addToCart(game)
     setCartMessage(`${game.title} fue agregado al carrito.`)
   }
 
@@ -63,7 +63,7 @@ export function GameDetailPage() {
             <Link className="ghost-button" to="/">
               Volver a la tienda
             </Link>
-            <button className="soft-button" type="button" onClick={handleAddToCart}>
+            <button className="soft-button" type="button" onClick={() => void handleAddToCart()}>
               Agregar al carrito
             </button>
             <Link className="soft-button" to="/dashboard">
