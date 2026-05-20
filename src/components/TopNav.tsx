@@ -10,11 +10,11 @@ export function TopNav({
   sidebarOpen?: boolean
 }) {
   const navigate = useNavigate()
-  const { isAuthenticated, logout, userEmail } = useAuth()
+  const { isAuthenticated, logout, userEmail, userName } = useAuth()
   const { totalItems, totalPrice } = useCart()
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    await logout()
     navigate('/')
   }
 
@@ -57,7 +57,7 @@ export function TopNav({
         {isAuthenticated ? (
           <details className="user-menu">
             <summary>
-              <span>{userEmail}</span>
+              <span>{userName ?? userEmail}</span>
               <strong>{totalItems}</strong>
             </summary>
             <div className="user-menu-panel">

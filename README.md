@@ -1,73 +1,65 @@
-# React + TypeScript + Vite
+# I Wish To Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketplace web de videojuegos desarrollado con React, TypeScript, Vite y Firebase para el proyecto final de Estructuras de Datos II.
 
-Currently, two official plugins are available:
+## Integrantes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Sarai: Firebase Authentication, perfiles de usuario en Firestore, rutas privadas y estructura de tabla hash para usuarios.
+- Jhojan: carrito, ordenes/transacciones y cola de compras.
+- Steven: catalogo, filtros, propuesta grafica, arbol de categorias y grafo de recomendaciones.
 
-## React Compiler
+## Enlaces
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Repositorio GitHub: pendiente
+- Propuesta grafica Figma/Adobe: pendiente
+- Despliegue Netlify: pendiente
 
-## Expanding the ESLint configuration
+## Tecnologias
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React + TypeScript
+- Vite
+- React Router
+- Firebase Authentication
+- Cloud Firestore
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Configuracion de Firebase
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Crear un proyecto en Firebase.
+2. Activar Authentication con proveedor de correo y contrasena.
+3. Activar Cloud Firestore.
+4. Copiar `.env.example` como `.env`.
+5. Completar las variables `VITE_FIREBASE_*` con la configuracion web del proyecto Firebase.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_FIREBASE_API_KEY=your-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
+npm run build
 ```
+
+## Estructuras de datos
+
+- Tabla hash: cache local de perfiles por correo para busqueda rapida de usuarios autenticados.
+- Pila: historial de juegos visitados.
+- Lista circular doble: carrusel de productos destacados.
+- Arbol: categorias y subcategorias del catalogo.
+- Grafo: recomendaciones entre juegos relacionados.
+
+## Alcance actual de la rama de Sarai
+
+- Configuracion base de Firebase.
+- Registro real de usuarios con Firebase Authentication.
+- Inicio y cierre de sesion con Firebase Authentication.
+- Guardado de perfiles de usuario en Firestore.
+- Proteccion de rutas privadas con estado de carga.
+- Documentacion de variables de entorno para el equipo.

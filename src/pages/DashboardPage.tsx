@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 
 export function DashboardPage() {
-  const { userEmail, logout } = useAuth()
+  const { userEmail, userName, logout } = useAuth()
   const { cartItems, totalItems, totalPrice, removeFromCart, clearCart } = useCart()
 
   return (
@@ -24,9 +24,9 @@ export function DashboardPage() {
           <div className="dashboard-grid">
             <article className="info-panel glass-card">
               <h3>Usuario</h3>
-              <p className="muted">Correo actual</p>
+              <p className="muted">{userName ?? 'Perfil conectado'}</p>
               <strong>{userEmail}</strong>
-              <p className="tiny muted">Cuenta de prueba conectada a la plataforma.</p>
+              <p className="tiny muted">Cuenta autenticada con Firebase.</p>
             </article>
 
             <article className="info-panel glass-card">

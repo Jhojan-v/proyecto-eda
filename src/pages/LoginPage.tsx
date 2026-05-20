@@ -7,15 +7,20 @@ export function LoginPage() {
   const { login, register } = useAuth()
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [name, setName] = useState('')
-  const [email, setEmail] = useState('user@mail.com')
-  const [password, setPassword] = useState('123')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setError('')
+    setIsSubmitting(true)
 
     if (mode === 'register') {
-      const result = register(email, password, name)
+      const result = await register(email, password, name)
+      setIsSubmitting(false)
+
       if (!result.ok) {
         setError(result.message)
         return
@@ -25,10 +30,11 @@ export function LoginPage() {
       return
     }
 
-    const ok = login(email, password)
+    const result = await login(email, password)
+    setIsSubmitting(false)
 
-    if (!ok) {
-      setError('Credenciales invalidas. Usa user@mail.com / 123')
+    if (!result.ok) {
+      setError(result.message)
       return
     }
 
@@ -111,8 +117,8 @@ export function LoginPage() {
             <h2>{mode === 'login' ? 'Iniciar sesion' : 'Crear cuenta'}</h2>
             <p className="muted">
               {mode === 'login'
-                ? 'Usa la cuenta demo para entrar a la plataforma.'
-                : 'Registra un usuario nuevo usando una tabla hash por correo.'}
+                ? 'Entra con tu cuenta registrada en Firebase Authentication.'
+                : 'Registra un usuario nuevo y guarda su perfil en Firestore.'}
             </p>
           </div>
 
@@ -143,7 +149,7 @@ export function LoginPage() {
               <input
                 type="password"
                 value={password}
-                autoComplete="current-password"
+                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                 onChange={(event) => setPassword(event.target.value)}
               />
             </label>
@@ -159,15 +165,15 @@ export function LoginPage() {
 
             {error ? <p className="form-error">{error}</p> : null}
 
-            <button className="soft-button login-submit" type="submit">
-              {mode === 'login' ? 'Entrar' : 'Crear cuenta'}
+            <button className="soft-button login-submit" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Procesando...' : mode === 'login' ? 'Entrar' : 'Crear cuenta'}
             </button>
           </form>
 
           <div className="demo-access">
-            <span>Cuenta demo</span>
-            <strong>user@mail.com</strong>
-            <small>Contrasena: 123</small>
+            <span>Firebase activo</span>
+            <strong>Auth + Firestore</strong>
+            <small>Configura las variables VITE_FIREBASE_* en .env</small>
           </div>
 
           <div className="login-divider">

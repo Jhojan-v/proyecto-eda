@@ -245,6 +245,20 @@
   font-weight: 800;
 }
 
+.soft-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+  transform: none;
+}
+
+.route-loading {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  color: #f3eaff;
+  font-weight: 800;
+}
+
 .demo-access {
   display: grid;
   gap: 4px;
