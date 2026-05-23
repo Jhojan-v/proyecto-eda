@@ -1,4 +1,5 @@
-import type { CategoryNode } from '../types'
+import type { CategoryNode } from '../../types'
+import styles from './Sidebar.module.scss'
 
 type SidebarProps = {
   tree: CategoryNode
@@ -16,39 +17,43 @@ export function Sidebar({
   const categories = tree.children ?? []
 
   return (
-    <aside className="sidebar glass-card" id="categorias">
-      <div className="sidebar-header">
+    <aside className={styles.sidebar} id="categorias">
+      <div className={styles.sidebarHeader}>
         <span className="status-chip">Explorar</span>
         <h2>Géneros</h2>
         <p className="muted">Filtra el catálogo por tipo de juego.</p>
       </div>
 
-      <div className="sidebar-summary">
+      <div className={styles.sidebarSummary}>
+        <span>Resultados filtrados:</span>
         <strong>{totalGames}</strong>
-        <span>juegos disponibles</span>
       </div>
 
-      <nav className="sidebar-filter-list" aria-label="Filtros por género">
+      <nav className={styles.sidebarFilterList} aria-label="Filtros por género">
         <button
-          className={selectedCategory === 'Todos' ? 'sidebar-filter active' : 'sidebar-filter'}
+          className={`${styles.sidebarFilter} ${selectedCategory === 'Todos' ? styles.active : ''}`}
           type="button"
           onClick={() => onSelectCategory('Todos')}
         >
-          <span>Todos</span>
+          <span>Todos los Géneros</span>
           <small>Ver catálogo completo</small>
         </button>
 
         {categories.map((category) => (
           <button
-            className={
-              selectedCategory === category.title ? 'sidebar-filter active' : 'sidebar-filter'
-            }
+            className={`${styles.sidebarFilter} ${
+              selectedCategory === category.title ? styles.active : ''
+            }`}
             key={category.title}
             type="button"
             onClick={() => onSelectCategory(category.title)}
           >
             <span>{category.title}</span>
-            <small>{category.children?.map((child) => child.title).join(' · ')}</small>
+            <small>
+              {category.children && category.children.length > 0
+                ? category.children.map((child) => child.title).join(', ')
+                : 'Licencias directas'}
+            </small>
           </button>
         ))}
       </nav>

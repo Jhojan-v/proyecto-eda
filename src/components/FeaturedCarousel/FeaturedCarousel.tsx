@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { Game } from '../types'
-import { CircularDoublyLinkedList } from '../utils/circularList'
+import type { Game } from '../../types'
+import { CircularDoublyLinkedList } from '../../utils/circularList'
+import styles from './FeaturedCarousel.module.scss'
 
-export function FeaturedCarousel({
-  items,
-  onOpenDetails,
-}: {
+type FeaturedCarouselProps = {
   items: Game[]
   onOpenDetails: (gameId: string) => void
-}) {
+}
+
+export function FeaturedCarousel({ items, onOpenDetails }: FeaturedCarouselProps) {
+ 
   const list = useMemo(() => new CircularDoublyLinkedList(items), [items])
   const [activeGame, setActiveGame] = useState<Game | null>(() => list.getCurrent())
   const [rotation, setRotation] = useState(0)
@@ -18,7 +19,7 @@ export function FeaturedCarousel({
       const nextGame = list.moveNext()
       setActiveGame(nextGame)
       setRotation((current) => (current + 1) % list.length())
-    }, 3500)
+    }, 4500)
 
     return () => window.clearInterval(interval)
   }, [list])
@@ -26,33 +27,38 @@ export function FeaturedCarousel({
   if (!activeGame) return null
 
   return (
-    <section className="featured-carousel soft-card">
-      <div className="section-header">
+    <section className={styles.featuredCarousel}>
+      <div className={styles.sectionHeader}>
         <div>
-          <h2>Ofertas destacadas</h2>
-          <p className="muted">Selecciones por tiempo limitado rotando en el foco principal.</p>
+          <h2>Ofertas Destacadas</h2>
         </div>
-        <span className="status-chip">Espacio {rotation + 1}</span>
+        <span className="status-chip">Slot {rotation + 1}</span>
       </div>
 
-      <div className="carousel-panel">
+      <div className={styles.carouselPanel}>
         <div>
-          <div className="pill-row">
-            <span className="pill">Oferta {activeGame.discount}</span>
-            <span className="pill">{activeGame.category}</span>
+          <div className={styles.pillRow}>
+            <span className={styles.promoChip}>
+              PROMOCIONES DESTACADAS
+            </span>
+            <span className={styles.categoryPill}>{activeGame.category}</span>
           </div>
+
           <h3>{activeGame.title}</h3>
           <p>{activeGame.description}</p>
-          <div className="carousel-tags">
+
+          <div className={styles.carouselTags}>
             {activeGame.tags.map((tag) => (
               <span key={tag} className="tag">
                 {tag}
               </span>
             ))}
           </div>
-          <div className="carousel-controls" style={{ marginTop: '18px' }}>
+
+          <div className={styles.carouselControls}>
             <button
               className="ghost-button"
+              type="button"
               onClick={() => {
                 setActiveGame(list.movePrev())
                 setRotation((current) => (current - 1 + list.length()) % list.length())
@@ -62,6 +68,7 @@ export function FeaturedCarousel({
             </button>
             <button
               className="soft-button"
+              type="button"
               onClick={() => {
                 setActiveGame(list.moveNext())
                 setRotation((current) => (current + 1) % list.length())
@@ -69,16 +76,20 @@ export function FeaturedCarousel({
             >
               Siguiente
             </button>
-            <button className="link-button" onClick={() => onOpenDetails(activeGame.id)}>
-              Ver detalle
+            <button 
+              className="link-button" 
+              type="button"
+              onClick={() => onOpenDetails(activeGame.id)}
+            >
+              Ver especificaciones
             </button>
           </div>
         </div>
 
-        <div className="price-badge">
-          <span>Precio actual</span>
+        <div className={styles.priceBadge}>
+          <span>Precio de Oferta</span>
           <strong>${activeGame.price.toFixed(2)}</strong>
-          <small>{activeGame.discount} de descuento hoy</small>
+          <small>{activeGame.discount} OFF</small>
         </div>
       </div>
     </section>

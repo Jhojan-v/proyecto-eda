@@ -1,0 +1,208 @@
+@use '../../styles/variables' as *;
+
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.loginLayout {
+  max-width: 480px;
+  width: 100%;
+}
+
+.authCard {
+  @include glass-card;
+  background: linear-gradient(180deg, rgba($purple-dark, 0.6), rgba(9, 6, 15, 0.85));
+  border: 1px solid rgba($purple-primary, 0.25);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+}
+
+.authHeader {
+  text-align: center;
+  margin-bottom: 32px;
+
+  h2 {
+    color: $text-bright;
+    margin: 0 0 8px 0;
+    font-size: 2rem;
+    letter-spacing: -0.5px;
+  }
+
+  p {
+    margin: 0;
+    color: $text-muted;
+    font-size: 0.95rem;
+  }
+}
+
+.authSwitchRow {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: $text-station;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: $text-bright;
+    }
+
+    &.active {
+      background: $purple-primary;
+      color: $text-bright;
+      box-shadow: 0 0 12px rgba(159, 99, 255, 0.4);
+    }
+  }
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: $text-bright;
+  font-weight: 600;
+  font-size: 0.9rem;
+
+  input {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba($text-muted, 0.2);
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $purple-primary;
+      box-shadow: 0 0 8px rgba(159, 99, 255, 0.3);
+    }
+  }
+}
+
+.formOptions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: $text-station;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+}
+
+.formError {
+  margin: 0;
+  background: rgba($accent-red, 0.1);
+  border: 1px solid rgba($accent-red, 0.3);
+  color: #ff6b6b;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.demoBadge {
+  margin-top: 28px;
+  background: rgba($accent-green, 0.03);
+  border: 1px solid rgba($accent-green, 0.15);
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  text-align: center;
+
+  span {
+    color: $accent-green;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  strong {
+    color: $text-bright;
+  }
+
+  small {
+    color: $text-muted;
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: $text-muted;
+  font-size: 0.8rem;
+  margin: 24px 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &:not(:empty)::before {
+    margin-right: .75em;
+  }
+
+  &:not(:empty)::after {
+    margin-left: .75em;
+  }
+}
+
+.socialRow {
+  display: flex;
+  gap: 12px;
+
+  button {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: $text-bright;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+}

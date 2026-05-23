@@ -1,13 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import './App.css'
-import { ProtectedRoute } from './components/ProtectedRoute'
+import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
-import { DashboardPage } from './pages/DashboardPage'
-import { GameDetailPage } from './pages/GameDetailPage'
-import { HistoryPage } from './pages/HistoryPage'
-import { HomePage } from './pages/HomePage'
-import { LoginPage } from './pages/LoginPage'
+import { DashboardPage } from './pages/DashboardPage/DashboardPage'
+import { GameDetailPage } from './pages/GameDetailPage/GameDetailPage'
+import { HistoryPage } from './pages/HistoryPage/HistoryPage'
+import { HomePage } from './pages/HomePage/HomePage'
+import { LoginPage } from './pages/LoginPage/LoginPage'
 
 function App() {
   return (
