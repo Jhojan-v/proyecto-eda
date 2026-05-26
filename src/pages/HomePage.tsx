@@ -6,6 +6,7 @@ import { TopNav } from '../components/TopNav'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { categoryTree, games } from '../data/games'
+import { formatCopCurrency } from '../utils/currency'
 
 export function HomePage() {
   const navigate = useNavigate()
@@ -115,6 +116,7 @@ export function HomePage() {
                         <h3>{game.title}</h3>
                         <span className="tag">{game.category}</span>
                       </div>
+                      <strong>{formatCopCurrency(game.price)}</strong>
                       <p>{game.description}</p>
                       <div className="game-tags">
                         {game.tags.map((tag) => (
@@ -142,7 +144,7 @@ export function HomePage() {
                   <h3>Carrito</h3>
                   <p>{processingMessage}</p>
                   <p className="tiny muted">
-                    {totalItems} producto(s) · Total ${totalPrice.toFixed(2)}
+                    {totalItems} producto(s) · Total {formatCopCurrency(totalPrice)}
                   </p>
                   <ul className="queue-list">
                     {cartItems.length > 0 ? (
