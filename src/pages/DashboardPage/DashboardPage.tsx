@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type SetStateAction } from 'react'
 import { Link } from 'react-router-dom'
 import { TopNav } from '../../components/TopNav/TopNav'
 import { useAuth } from '../../context/AuthContext'
@@ -59,7 +59,15 @@ export function DashboardPage() {
 
   return (
     <div className={styles.dashboardPage}>
-      <TopNav />
+      <TopNav searchQuery={''} onSearchChange={function (value: SetStateAction<string>): void {
+        throw new Error('Function not implemented.')
+      } } maxPrice={0} onPriceChange={function (value: SetStateAction<number>): void {
+        throw new Error('Function not implemented.')
+      } } selectedTag={''} onTagChange={function (value: SetStateAction<string>): void {
+        throw new Error('Function not implemented.')
+      } } allTags={[]} onlyWithDiscount={false} onDiscountToggle={function (value: SetStateAction<boolean>): void {
+        throw new Error('Function not implemented.')
+      } } />
 
       <main className={styles.dashboardLayout}>
 
