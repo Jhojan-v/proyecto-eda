@@ -1,13 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-<<<<<<< HEAD:src/components/FeaturedCarousel.tsx
-import type { Game } from '../types'
-import { formatCopCurrency } from '../utils/currency'
-import { CircularDoublyLinkedList } from '../utils/circularList'
-=======
 import type { Game } from '../../types'
 import { CircularDoublyLinkedList } from '../../utils/circularList'
 import styles from './FeaturedCarousel.module.scss'
->>>>>>> d73a9970bba699c4b50ec12c1fd4428b30c2f831:src/components/FeaturedCarousel/FeaturedCarousel.tsx
 
 type FeaturedCarouselProps = {
   items: Game[]
@@ -92,17 +86,10 @@ export function FeaturedCarousel({ items, onOpenDetails }: FeaturedCarouselProps
           </div>
         </div>
 
-<<<<<<< HEAD:src/components/FeaturedCarousel.tsx
-        <div className="price-badge">
-          <span>Precio actual</span>
-          <strong>{formatCopCurrency(activeGame.price)}</strong>
-          <small>{activeGame.discount} de descuento hoy</small>
-=======
         <div className={styles.priceBadge}>
           <span>Precio de Oferta</span>
           <strong>${activeGame.price.toFixed(2)}</strong>
           <small>{activeGame.discount} OFF</small>
->>>>>>> d73a9970bba699c4b50ec12c1fd4428b30c2f831:src/components/FeaturedCarousel/FeaturedCarousel.tsx
         </div>
       </div>
     </section>
