@@ -6,14 +6,13 @@ import { TopNav } from '../components/TopNav'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { categoryTree, games } from '../data/games'
-import { useGameHistory } from '../hooks/useGameHistory'
+import { formatCopCurrency } from '../utils/currency'
 
 export function HomePage() {
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
   const { addToCart, cartItems, totalItems, totalPrice } = useCart()
-  const { history, latestVisited, removeLatestVisit } = useGameHistory()
-  const [processingMessage, setProcessingMessage] = useState('El carrito está listo.')
+  const [processingMessage, setProcessingMessage] = useState('El carrito esta listo.')
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('Todos')
 
@@ -22,22 +21,15 @@ export function HomePage() {
     return games.filter((game) => game.category === selectedCategory)
   }, [selectedCategory])
 
-  const recentGames = useMemo(() => {
-    const uniqueIds = [...new Set([...history].reverse())].slice(0, 4)
-    return uniqueIds
-      .map((id) => games.find((game) => game.id === id))
-      .filter((game) => game !== undefined)
-  }, [history])
-
   const handleOpenDetails = (gameId: string) => {
     navigate(`/game/${gameId}`)
   }
 
-  const handlePurchase = (gameId: string) => {
+  const handlePurchase = async (gameId: string) => {
     const game = games.find((item) => item.id === gameId)
     if (!game) return
 
-    addToCart(game)
+    await addToCart(game)
     setProcessingMessage(`${game.title} fue agregado al carrito.`)
   }
 
@@ -61,22 +53,22 @@ export function HomePage() {
             <div className="hero-copy">
               <div className="pill-row">
                 <span className="pill">Claves digitales</span>
-                <span className="pill">Ofertas instantáneas</span>
+                <span className="pill">Ofertas instantaneas</span>
                 <span className="pill">Mundos deseados</span>
               </div>
               <div>
                 <h1>i wish to game</h1>
                 <p>
-                  Descubre ofertas neón, aventuras seleccionadas y tu próxima obsesión gamer en
+                  Descubre ofertas neon, aventuras seleccionadas y tu proxima obsesion gamer en
                   una sola vitrina organizada.
                 </p>
               </div>
               <div className="action-row">
                 <Link className="soft-button" to={isAuthenticated ? '/dashboard' : '/login'}>
-                  {isAuthenticated ? 'Abrir dashboard' : 'Iniciar sesión'}
+                  {isAuthenticated ? 'Abrir dashboard' : 'Iniciar sesion'}
                 </Link>
                 <a className="ghost-button" href="#catalogo">
-                  Explorar catálogo
+                  Explorar catalogo
                 </a>
               </div>
             </div>
@@ -84,7 +76,7 @@ export function HomePage() {
             <div className="hero-stats">
               <article className="stat-card">
                 <strong>{games.length}</strong>
-                <span>juegos en catálogo</span>
+                <span>juegos en catalogo</span>
               </article>
               <article className="stat-card">
                 <strong>{totalItems}</strong>
@@ -103,12 +95,17 @@ export function HomePage() {
             <section id="catalogo" className="soft-card">
               <div className="section-header">
                 <div>
-                  <h2>Catálogo</h2>
+                  <h2>Catalogo</h2>
                   <p className="muted">
                     Mostrando {filteredGames.length} juego(s) de {selectedCategory.toLowerCase()}.
                   </p>
                 </div>
-                <span className="status-chip">Filtro: {selectedCategory}</span>
+                <div className="recent-row">
+                  <span className="status-chip">Filtro: {selectedCategory}</span>
+                  <Link className="ghost-button" to="/history">
+                    Historial
+                  </Link>
+                </div>
               </div>
 
               <div className="queue-grid">
@@ -116,7 +113,10 @@ export function HomePage() {
                   {filteredGames.map((game) => (
                     <article key={game.id} className="game-card glass-card">
                       <div className="game-card-header">
-                        <h3>{game.title}</h3>
+                        <div>
+                          <h3>{game.title}</h3>
+                          <p className="tiny muted">{formatCopCurrency(game.price)}</p>
+                        </div>
                         <span className="tag">{game.category}</span>
                       </div>
                       <p>{game.description}</p>
@@ -128,7 +128,7 @@ export function HomePage() {
                         ))}
                       </div>
                       <div className="detail-actions" style={{ marginTop: '16px' }}>
-                        <button className="soft-button" onClick={() => handlePurchase(game.id)}>
+                        <button className="soft-button" onClick={() => void handlePurchase(game.id)}>
                           Comprar
                         </button>
                         <button
@@ -146,7 +146,7 @@ export function HomePage() {
                   <h3>Carrito</h3>
                   <p>{processingMessage}</p>
                   <p className="tiny muted">
-                    {totalItems} producto(s) · Total ${totalPrice.toFixed(2)}
+                    {totalItems} producto(s) · Total {formatCopCurrency(totalPrice)}
                   </p>
                   <ul className="queue-list">
                     {cartItems.length > 0 ? (
@@ -159,45 +159,11 @@ export function HomePage() {
                     ) : (
                       <li>
                         <span>No hay productos agregados</span>
-                        <span className="muted">Vacío</span>
+                        <span className="muted">Vacio</span>
                       </li>
                     )}
                   </ul>
                 </aside>
-              </div>
-            </section>
-
-            <section className="soft-card">
-              <div className="section-header">
-                <div>
-                  <h2>Vistos recientemente</h2>
-                  <p className="muted">Vuelve rápidamente a los juegos que revisaste hace poco.</p>
-                </div>
-                <div className="recent-row">
-                  <span className="status-chip">Último: {latestVisited ?? 'sin registros'}</span>
-                  <button className="ghost-button" onClick={() => removeLatestVisit()}>
-                    Quitar último
-                  </button>
-                </div>
-              </div>
-
-              <div className="recent-grid">
-                {recentGames.length > 0 ? (
-                  recentGames.map((game) => (
-                    <article key={game.id} className="recent-card glass-card">
-                      <h3>{game.title}</h3>
-                      <p className="tiny muted">ID del juego: {game.id}</p>
-                      <button className="link-button" onClick={() => handleOpenDetails(game.id)}>
-                        Abrir detalle
-                      </button>
-                    </article>
-                  ))
-                ) : (
-                  <article className="recent-card glass-card">
-                    <h3>No hay visitas recientes</h3>
-                    <p>Explora el catálogo y aquí aparecerán tus últimas vistas.</p>
-                  </article>
-                )}
               </div>
             </section>
           </div>

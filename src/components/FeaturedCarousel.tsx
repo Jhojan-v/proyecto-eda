@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { Game } from '../types'
+import { formatCopCurrency } from '../utils/currency'
 import { CircularDoublyLinkedList } from '../utils/circularList'
 
 export function FeaturedCarousel({
@@ -77,7 +78,7 @@ export function FeaturedCarousel({
 
         <div className="price-badge">
           <span>Precio actual</span>
-          <strong>${activeGame.price.toFixed(2)}</strong>
+          <strong>{formatCopCurrency(activeGame.price)}</strong>
           <small>{activeGame.discount} de descuento hoy</small>
         </div>
       </div>

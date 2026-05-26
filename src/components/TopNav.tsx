@@ -1,6 +1,7 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import { formatCopCurrency } from '../utils/currency'
 
 export function TopNav({
   onToggleSidebar,
@@ -29,7 +30,7 @@ export function TopNav({
             aria-label={sidebarOpen ? 'Cerrar menu lateral' : 'Abrir menu lateral'}
             title={sidebarOpen ? 'Cerrar menu lateral' : 'Abrir menu lateral'}
           >
-            ☰
+            ≡
           </button>
         ) : null}
         <Link className="brand-mark" to="/">
@@ -64,7 +65,7 @@ export function TopNav({
               <p className="tiny muted">Sesion activa</p>
               <p>{userEmail}</p>
               <p className="tiny muted">
-                Carrito: {totalItems} producto(s) · ${totalPrice.toFixed(2)}
+                Carrito: {totalItems} producto(s) · {formatCopCurrency(totalPrice)}
               </p>
               <Link className="ghost-button compact-button" to="/dashboard">
                 Ver dashboard

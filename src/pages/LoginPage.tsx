@@ -49,11 +49,6 @@ export function LoginPage() {
           <span>i wish to game</span>
         </Link>
 
-        <div className="login-search" role="search">
-          <span aria-hidden="true">Buscar</span>
-          <span>juegos, ofertas y tarjetas</span>
-        </div>
-
         <div className="login-top-actions">
           <span>Latam</span>
           <span>COP</span>
@@ -115,11 +110,6 @@ export function LoginPage() {
 
           <div>
             <h2>{mode === 'login' ? 'Iniciar sesion' : 'Crear cuenta'}</h2>
-            <p className="muted">
-              {mode === 'login'
-                ? 'Entra con tu cuenta registrada en Firebase Authentication.'
-                : 'Registra un usuario nuevo y guarda su perfil en Firestore.'}
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="login-form">
@@ -154,36 +144,12 @@ export function LoginPage() {
               />
             </label>
 
-            <div className="login-options">
-              <label>
-                <input type="checkbox" defaultChecked /> Recordarme
-              </label>
-              <button className="link-button" type="button">
-                Olvide mi contrasena
-              </button>
-            </div>
-
             {error ? <p className="form-error">{error}</p> : null}
 
             <button className="soft-button login-submit" type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Procesando...' : mode === 'login' ? 'Entrar' : 'Crear cuenta'}
             </button>
           </form>
-
-          <div className="demo-access">
-            <span>Firebase activo</span>
-            <strong>Auth + Firestore</strong>
-            <small>Configura las variables VITE_FIREBASE_* en .env</small>
-          </div>
-
-          <div className="login-divider">
-            <span>o continua con</span>
-          </div>
-
-          <div className="social-login-row">
-            <button type="button">Google</button>
-            <button type="button">Steam</button>
-          </div>
         </section>
       </main>
     </div>
