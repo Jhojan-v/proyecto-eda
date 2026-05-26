@@ -78,8 +78,12 @@ export async function getUserOrders(userId: string) {
       createdAt:
         typeof data.createdAt?.toDate === 'function'
           ? data.createdAt.toDate().toISOString()
+<<<<<<< HEAD
           : localOrders.find((order) => order.id === document.id)?.createdAt ??
             new Date().toISOString(),
+=======
+          : localOrders.find((order) => order.id === document.id)?.createdAt ?? new Date().toISOString(),
+>>>>>>> d73a9970bba699c4b50ec12c1fd4428b30c2f831
     } satisfies PurchaseOrder
   })
 }

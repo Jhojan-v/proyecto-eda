@@ -1,0 +1,91 @@
+@use '../../styles/variables' as *;
+
+.sidebar {
+  @include glass-card;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.sidebarHeader {
+  border-bottom: 1px solid rgba($text-muted, 0.1);
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+
+  h2 {
+    color: $text-bright;
+    margin: 6px 0 2px 0;
+    font-size: 1.4rem;
+  }
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: $text-muted;
+  }
+}
+
+.sidebarSummary {
+  background: rgba($purple-primary, 0.05);
+  border: 1px solid rgba($purple-primary, 0.15);
+  padding: 10px 14px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+
+  strong {
+    color: $purple-primary;
+    font-size: 1.1rem;
+  }
+}
+
+.sidebarFilterList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebarFilter {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba($purple-primary, 0.1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-align: left;
+  color: $text-station;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+
+  span {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  small {
+    color: $text-muted;
+    font-size: 0.75rem;
+    margin-top: 2px;
+  }
+
+  &:hover {
+    background: rgba($purple-primary, 0.08);
+    border-color: rgba($purple-primary, 0.4);
+    transform: translateX(4px);
+  }
+
+  &.active {
+    background: linear-gradient(135deg, $purple-dark, rgba($purple-primary, 0.3));
+    border-color: $purple-primary;
+    color: $text-bright;
+    box-shadow: 0 0 10px rgba(159, 99, 255, 0.2);
+
+    small {
+      color: $text-bright;
+      opacity: 0.8;
+    }
+  }
+}

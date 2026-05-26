@@ -1,0 +1,44 @@
+// Variables globales del proyecto
+
+$bg-main: #09060f;
+$bg-surface: #130a1f;
+$bg-dark: #050308;
+$purple-primary: #9f63ff;
+$purple-dark: #2c1a3d;
+$accent-green: #2ecc71;
+$accent-red: #e74c3c;
+$text-bright: #f3eaff;
+$text-muted: #a692c6;
+$text-station: #d6c8f2;
+
+$glass-gradient: linear-gradient(135deg, rgba(24, 12, 42, 0.65), rgba(13, 8, 22, 0.45));
+$purple-border: rgba(159, 99, 255, 0.25);
+$neon-glow: 0 0 15px rgba(159, 99, 255, 0.4);
+
+@mixin glass-card {
+  background: $glass-gradient;
+  border: 1px solid $purple-border;
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+}
+
+@mixin soft-button {
+  background: linear-gradient(90deg, #8338ec, $purple-primary);
+  color: $text-bright;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(131, 56, 236, 0.3);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(159, 99, 255, 0.5);
+  }
+
+  &:disabled {
+    background: #2a1f3d;
+    color: $text-muted;
+    cursor: not-allowed;
+  }
+}
