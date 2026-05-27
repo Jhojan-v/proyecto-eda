@@ -10,9 +10,9 @@ Marketplace web de videojuegos desarrollado con React, TypeScript, Vite y Fireba
 
 ## Enlaces
 
-- Repositorio GitHub: pendiente
+- Repositorio GitHub: https://github.com/Jhojan-v/proyecto-eda.git
 - Propuesta grafica Figma/Adobe: pendiente
-- Despliegue Netlify: pendiente
+- Despliegue Netlify: (https://i-wish-to-game.netlify.app/)
 
 ## Tecnologias
 
@@ -55,11 +55,11 @@ npm run build
 - Arbol: categorias y subcategorias del catalogo.
 - Grafo: recomendaciones entre juegos relacionados.
 
-## Alcance actual de la rama de Sarai
+## Alcance actual de la rama 
 
 - Configuracion base de Firebase.
 - Registro real de usuarios con Firebase Authentication.
 - Inicio y cierre de sesion con Firebase Authentication.
 - Guardado de perfiles de usuario en Firestore.
 - Proteccion de rutas privadas con estado de carga.
-- Documentacion de variables de entorno para el equipo.
+
