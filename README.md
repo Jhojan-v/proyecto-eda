@@ -11,7 +11,7 @@ Marketplace web de videojuegos desarrollado con React, TypeScript, Vite y Fireba
 ## Enlaces
 
 - Repositorio GitHub: https://github.com/Jhojan-v/proyecto-eda.git
-- Propuesta grafica Figma/Adobe: pendiente
+- Propuesta grafica Figma/Adobe: https://www.figma.com/make/xLmJzOrM28P3KcVIxFDinH/I-Wish-To-Game-Platform?t=zHqqqKzNzDbkphZe-1
 - Despliegue Netlify: (https://i-wish-to-game.netlify.app/)
 
 ## Tecnologias
